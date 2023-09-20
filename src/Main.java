@@ -113,7 +113,7 @@ class Main {
 
 		// Полученный результат приводим к единой системе счисления с введёнными данными
 		if (val1) {
-			return Numerals.romanConvector(result);
+			return Numerals.RomanNumeral.generateIntermediateValues(result);
 		} else {
 			return String.valueOf(result);
 		}
@@ -156,5 +156,37 @@ class Numerals {
 			throw new IllegalArgumentException("В римской системе нет отрицательных чисел");
 		}
 		return ROMAN[arab - 1];
+	}
+	public enum RomanNumeral {
+		I(1), IV(4), V(5), IX(9), X(10), XL(40), L(50), XC(90), C(100);
+
+		private int value;
+
+		RomanNumeral(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
+
+		public static String generateIntermediateValues(int targetValue) {
+			StringBuilder result = new StringBuilder();
+			RomanNumeral[] values = RomanNumeral.values();
+			int index = values.length - 1;
+
+			while (targetValue > 0 && index >= 0) {
+				RomanNumeral currentSymbol = values[index];
+
+				if (targetValue >= currentSymbol.value) {
+					result.append(currentSymbol.name());
+					targetValue -= currentSymbol.value;
+				} else {
+					index--;
+				}
+			}
+
+			return result.toString();
+		}
 	}
 }
